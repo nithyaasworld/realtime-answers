@@ -1,0 +1,22 @@
+.login-container{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+  }
+  .sign-in-button{
+    font-weight: bold;
+    padding: 0.5em 1em; 
+    border-radius: 5px;
+    border: none;
+    box-shadow: 2px 2px 5px gray; 
+    background-color: rgb(128,128,128,0.3);
+    cursor: pointer;
+  }
+  .google-icon{
+      width: 16px;
+      position: relative;
+      top: 3px;
+  }

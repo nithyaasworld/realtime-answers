@@ -11,7 +11,7 @@ export default function Dashboard({ user, setUser }) {
   return (
     <div className="dashboard-wrapper" style={{display:'flex', justifyContent: 'center'}}>
       <div className="dashboard-container" style={{ maxWidth: "450px" }}>
-              <img style={{ position: 'absolute', right: '20px', top: '20px', width: '50px', borderRadius: '50%', cursor: 'pointer'}} onClick={logout} src={user.photoURL} alt="user profile"></img>
+        <img style={{ position: 'absolute', right: '20px', top: '20px', width: '50px', borderRadius: '50%', cursor: 'pointer'}} onClick={logout} src={user.photoURL} alt="user profile"></img>
         <h1>My Students</h1>
         <p>
           Enter the names of each person who will answer your questions,
