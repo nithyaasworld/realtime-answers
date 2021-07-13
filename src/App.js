@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react";
+import firebase from 'firebase/app';
+
+import "./App.css";
+import Login from "./Login";
+import Dashboard from "./Dashboard";
+import { authRef } from './firebase-config';
 
 function App() {
+  let [user, setUser] = useState("");
+  useEffect(() => {
+    authRef.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+  }, []);
+  useEffect(() => {
+    authRef.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+      }
+    })
+  })
+  useEffect(() => {
+    console.log(user)
+  }, [user]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div
+      className="App"
+    >
+      {!user.hasOwnProperty('uid') && <Login setUser={setUser} />}
+      {user.hasOwnProperty('uid') && user.uid.length > 0 && <Dashboard user={user} setUser={setUser}/>}
     </div>
   );
 }
-
 export default App;
