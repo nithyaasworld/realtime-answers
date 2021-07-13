@@ -25,4 +25,14 @@
       gap: 2em;
       align-items: center;
       margin-top: 12px;
-    }
+}
+.answer-box-container{
+    max-width: 1000px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2em;
+    justify-content: center;
+}
+.answer-box-single{
+    width: 300px;
+}
