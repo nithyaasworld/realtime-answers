@@ -20,3 +20,9 @@
       position: relative;
       top: 3px;
   }
+  .submit-btn-message{
+      display: flex;
+      gap: 2em;
+      align-items: center;
+      margin-top: 12px;
+    }
