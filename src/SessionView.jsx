@@ -1,22 +1,9 @@
 import { useEffect, useState } from "react";
 import { databaseRef } from "./firebase-config";
-import TextField from "@material-ui/core/TextField";
-import { InputLabel, Typography, withStyles } from "@material-ui/core";
-
-const CssTextField = withStyles({
-    root: {
+import { Button, Typography } from "@material-ui/core";
  
-      '& .MuiOutlinedInput-root': {
-        '& fieldset': {
-                border: '2px solid #4153AF'
-        },
-      },
-    },
-  })(TextField);
-  
-export default function SessionView({ user, setShowSession }) {
-    let [studentList, setStudentList] = useState([]);
-  
+export default function SessionView({ user, setShowSession, studentList, setStudentList }) {
+  let [showEndSessionText, setShowEndSessionText] = useState(false);
   const getData = async () => {
     databaseRef
       .collection("answerfox")
@@ -31,29 +18,33 @@ export default function SessionView({ user, setShowSession }) {
         }
       });
   };
+  const endSession = async() => {
+    setShowEndSessionText(true);
+    setStudentList([]);
+    await databaseRef.collection("answerfox").doc(user.email).delete();
+  }
   useEffect(() => {
     getData();
   }, []);
 
   return (
     <div className="session-view-container">
-      <h1>Dashboard</h1>
+      <div className="dashboard-first-row">
+        <h1>Dashboard</h1>
+        <div className="ending-session-section">
+          {showEndSessionText && <p>Ending session...</p>}
+        <Button onClick={endSession} variant="contained">End Session</Button>
+        </div>
+      </div>
       <p>
         Student Link: <a href="#">http://localhost:3000/#/s/3760757836</a>
       </p>
       <div className="answer-box-container">
               {studentList.length > 0 &&
                   studentList.map((s) => (
-                      <div className="answer-box-single">
+                      <div key={s} className="answer-box-single">
                           <Typography color="primary">{s}</Typography>
-                          <CssTextField
-                              id="outlined-multiline-flexible"
-                              label={s}
-                              multiline
-                              rows={6}
-                              variant="outlined"
-                              fullWidth
-                          ></CssTextField>
+                          <div className="answer-box"></div>
                       </div>
                   ))}
       </div>

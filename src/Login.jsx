@@ -1,5 +1,5 @@
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { provider, authRef } from "./firebase-config";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 export default function Login({setUser}){
      const signIn = () => {
@@ -21,8 +21,8 @@ export default function Login({setUser}){
     return (
         <div className="login-container">
             <h1>Everyone Answers</h1>
-            <div style={{marginBottom: '1em'}}>Welcome Please sign in.</div>
-            <AccountCircleIcon style={{color: 'gray', opacity: '0.5', fontSize: '150px', textAlign:'center', display: 'block'}} />
+            <div style={{ marginBottom: '1em' }}>Welcome Please sign in.</div>
+            <AccountCircleIcon style={{ color: 'gray', opacity: '0.5', fontSize: '150px', textAlign: 'center', display: 'block' }} />
             <button className="sign-in-button" onClick={signIn} > <img src={"google-color.svg"} alt="Google icon" className="google-icon"></img> SIGN IN WITH GOOGLE </button>
         </div>
     )

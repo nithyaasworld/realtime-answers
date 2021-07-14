@@ -1,38 +1,63 @@
-.login-container{
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 70vh;
-  }
-  .sign-in-button{
-    font-weight: bold;
-    padding: 0.5em 1em; 
-    border-radius: 5px;
-    border: none;
-    box-shadow: 2px 2px 5px gray; 
-    background-color: rgb(128,128,128,0.3);
-    cursor: pointer;
-  }
-  .google-icon{
-      width: 16px;
-      position: relative;
-      top: 3px;
-  }
-  .submit-btn-message{
-      display: flex;
-      gap: 2em;
-      align-items: center;
-      margin-top: 12px;
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
-.answer-box-container{
-    max-width: 1000px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2em;
-    justify-content: center;
+.App {
+  max-width: 1000px;
+  margin-top: 2em;
+  position: relative;
 }
-.answer-box-single{
-    width: 300px;
+.login-container {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+}
+.sign-in-button {
+  font-weight: bold;
+  padding: 0.5em 1em;
+  border-radius: 5px;
+  border: none;
+  box-shadow: 2px 2px 5px gray;
+  background-color: rgb(128, 128, 128, 0.3);
+  cursor: pointer;
+}
+.google-icon {
+  width: 16px;
+  position: relative;
+  top: 3px;
+}
+.submit-btn-message {
+  display: flex;
+  gap: 2em;
+  align-items: center;
+  margin-top: 12px;
+}
+.answer-box-container {
+  max-width: 1000px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2em;
+  justify-content: space-evenly;
+}
+.answer-box {
+  width: 260px;
+  height: 150px;
+  border-radius: 5px;
+  padding: 5px;
+  overflow: auto;
+  border: 2px solid #4153AF;
+}
+.dashboard-first-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.ending-session-section {
+  display: flex;
+  gap: 2em;
+  align-items: center;
 }
