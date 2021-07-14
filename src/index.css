@@ -6,8 +6,8 @@
 }
 .App {
   max-width: 1000px;
-  margin-top: 2em;
   position: relative;
+  margin: 2em auto;
 }
 .login-container {
   text-align: center;
