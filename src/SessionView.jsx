@@ -36,7 +36,7 @@ export default function SessionView({ user, setShowSession, studentList, setStud
         <Button onClick={endSession} variant="contained">End Session</Button>
         </div>
       </div>
-      <p>
+      <p style={{marginTop:'1em', marginBottom:'1em'}}>
         Student Link: <a href="#">http://localhost:3000/#/s/3760757836</a>
       </p>
       <div className="answer-box-container">

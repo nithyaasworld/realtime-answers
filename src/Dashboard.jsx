@@ -46,9 +46,9 @@ export default function Dashboard({ user, setUser, setShowSession }) {
       className="dashboard-wrapper"
       style={{ display: "flex", justifyContent: "center" }}
     >
-      <div className="dashboard-container" style={{ maxWidth: "450px" }}>
+      <div className="dashboard-container" style={{ maxWidth: "600px" }}>
         <h1>My Students</h1>
-        <p>
+        <p style={{ marginTop: '1em', marginBottom: '1em'}}>
           Enter the names of each person who will answer your questions,
           separated by comma or new line
         </p>
@@ -72,7 +72,7 @@ export default function Dashboard({ user, setUser, setShowSession }) {
           </Button>
           {isSubmitting && <p>Submitting...</p>}
         </div>
-        {error.length > 0 && <p style={{ color: "red" }}>{error}</p>}
+        {error.length > 0 && <p style={{ color: "red", marginTop: '1em' }}>{error}</p>}
       </div>
     </div>
   );
