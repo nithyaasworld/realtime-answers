@@ -1,21 +1,21 @@
 import { provider, authRef } from "./firebase-config";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { useEffect } from "react";
 
-export default function Login({setUser}){
-     const signIn = () => {
+export default function Login({ setUser, setShowLoader }) {
+    useEffect(() => {
+        setShowLoader(false);
+    },[])
+    const signIn = (event) => {
+        event.target.disabled = true;
         authRef
             .signInWithPopup(provider)
             .then((result) => {
-                let credential = result.credential;
-                let token = credential.accessToken;
-                console.log(token);
-                let user = result.user;
                 setUser(result.user);
-                console.log(user);
             }).catch((error) => {
-                let errorCode = error.code;
                 let errorMessage = error.message;
                 console.error(errorMessage);
+                event.target.disabled = false;
             });
     }
     return (

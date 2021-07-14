@@ -70,7 +70,7 @@ function App() {
           alt="user profile"
         ></img>
       )}
-      {!user.hasOwnProperty("uid") && <Login setUser={setUser} />}
+      {!user.hasOwnProperty("uid") && <Login setUser={setUser} setShowLoader={setShowLoader}/>}
       {user.hasOwnProperty("uid") && user.uid.length > 0 && !showSession && (
         <Dashboard
           user={user}
