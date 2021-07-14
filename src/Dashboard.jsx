@@ -16,7 +16,7 @@ export default function Dashboard({ user, setUser, setShowSession }) {
       errorSetup = true;
       setError("Blank values are not accepted. Please enter student names.");
     }
-    let currValuesInArr = currStudentList.split(",").map((e) => e.trim());
+    let currValuesInArr = currStudentList.split(/\s*[,\n]\s*/).map((e) => e.trim()).sort();
     if (currValuesInArr.length !== new Set(currValuesInArr).size) {
       errorSetup = true;
       setError(
