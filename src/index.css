@@ -43,10 +43,9 @@
   display: flex;
   flex-wrap: wrap;
   gap: 2em;
-  justify-content: center;
 }
 .answer-box {
-  width: 290px;
+  width: 275px;
   height: 150px;
   border-radius: 5px;
   padding: 5px;
