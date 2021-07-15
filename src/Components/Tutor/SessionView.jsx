@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
-import { databaseRef } from "../firebase-config";
+import { databaseRef } from "../../firebase-config";
 import { Button, Typography } from "@material-ui/core";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
-export default function SessionView({ user,  }) {
+export default function SessionView() {
   let [showEndSessionText, setShowEndSessionText] = useState(false);
   let [answers, setAnswers] = useState({});
   const history = useHistory();
-  let location = useLocation();
-  let studentList = location.state.studentList;
-  useEffect(() => {
-    console.log(answers);
-  },[answers])
+  let studentList = useSelector(state => state.answer_list.student_list);
+  let user = useSelector(state => state.user);
+  let dispatch = useDispatch();
+
   const endSession = async () => {
     setShowEndSessionText(true);
-    // setStudentList([]);
+    dispatch({ type: "DELETE_ALL_STUDENTS" });
     await databaseRef.collection("answerfox").doc(user.email).delete();
     history.push("./tutor-dashboard");
   };

@@ -1,26 +1,27 @@
-import { databaseRef } from "../firebase-config";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
+import { databaseRef } from "../../firebase-config";
 import { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
-import Loader from "./Loader";
-export default function Dashboard({
-  user,
-  studentList,
-  setStudentList,
-  showLoader,
-  setShowLoader,
-}) {
+import { useDispatch, useSelector } from "react-redux";
+
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+
+import Loader from "../../Loader";
+
+export default function Dashboard() {
   let [error, setError] = useState("");
   let [isSubmitting, setIsSubmitting] = useState(false);
+  let [showLoader, setShowLoader] = useState(false);
   const studentListRef = useRef();
   const history = useHistory();
-  useEffect(() => {
-    setShowLoader(true);
-  },[])
+
+  let user = useSelector((state) => state.user);
+  let studentList = useSelector((state) => state.answer_list.student_list);
+  let dispatch = useDispatch();
 
   useEffect(() => {
     if (user.uid && studentList.length === 0) {
+      setShowLoader(true);
       databaseRef
         .collection("answerfox")
         .doc(user.email)
@@ -28,23 +29,26 @@ export default function Dashboard({
         .then((doc) => {
           console.log("doc is: ", doc.data());
           if (doc.exists) {
-            setStudentList(doc.data().student_list.sort());
+            dispatch({
+              type: "ADD_ALL_STUDENTS",
+              payload: doc.data().student_list.sort(),
+            }); 
           }
           setShowLoader(false);
         })
-        .catch(() => {
+        .catch((err) => {
           setShowLoader(false);
+          console.error(err);
         });
     }
-  }, [user]);
+  }, []);
+
   useEffect(() => {
     if (studentList.length > 0) {
-      history.push({
-        pathname: "./tutor-session-view",
-        state: {studentList},
-      });
+      history.push("./tutor-session-view");
     }
   }, [studentList]);
+  
   const onStudentListSubmit = async () => {
     setError("");
     let errorSetup = false;
@@ -56,7 +60,7 @@ export default function Dashboard({
     let currValuesInArr = currStudentList
       .split(/\s*[,\n]\s*/)
       .map((e) => e.trim())
-      .filter(e => e !== "")
+      .filter((e) => e !== "")
       .sort();
     if (currValuesInArr.length !== new Set(currValuesInArr).size) {
       errorSetup = true;
@@ -72,7 +76,7 @@ export default function Dashboard({
         .set({ student_list: currValuesInArr })
         .then((doc) => {
           console.log("added doc is:", doc);
-          setStudentList(currValuesInArr);
+          dispatch({ type: "ADD_ALL_STUDENTS", payload: currValuesInArr });
           setIsSubmitting(false);
           history.push("./tutor-session-view");
         })
@@ -83,9 +87,7 @@ export default function Dashboard({
         });
     }
   };
-  useEffect(() => {
-    console.log('show loader is: ', showLoader);
-  },[showLoader])
+
   return (
     <div
       className="dashboard-wrapper"
@@ -101,7 +103,6 @@ export default function Dashboard({
           </p>
           <TextField
             inputRef={studentListRef}
-            id="outlined-textarea"
             label="Enter student names separated by comma or new line"
             placeholder="Eg: David, Kim, Rajesh"
             multiline

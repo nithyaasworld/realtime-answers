@@ -1,14 +1,11 @@
-import { provider, authRef } from "../firebase-config";
+import { provider, authRef } from "../../firebase-config";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import firebase from "firebase/app";
 
-export default function Login({ setUser, setShowLoader }) {
+export default function Login({ setUser}) {
     const history = useHistory();
-    useEffect(() => {
-        setShowLoader(false);
-    }, [])
     useEffect(() => {
         authRef.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
       }, []);

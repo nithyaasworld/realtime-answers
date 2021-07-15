@@ -1,7 +1,7 @@
 import { Button, MenuItem, Select, Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { databaseRef } from "../firebase-config";
+import { databaseRef } from "../../firebase-config";
 
 export default function StudentFirstView() {
   let [studentSelected, setStudentSelected] = useState("");
