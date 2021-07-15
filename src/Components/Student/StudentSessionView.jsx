@@ -1,5 +1,5 @@
 import { Typography } from "@material-ui/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom"
 import { databaseRef } from "../../firebase-config";
 
@@ -14,7 +14,18 @@ export default function StudentSessionView() {
         setAnswer(event.target.value);
         const studentRef = databaseRef.collection('answerfox').doc(tutorID);
         await studentRef.update({ [location.state.studentSelected]: event.target.value }).then(()=> setSyncStatus("Sync completed"));
-    }
+  }
+  useEffect(() => {
+    databaseRef.collection("answerfox").doc(tutorID).onSnapshot(doc => {
+      if ((doc.data().hasOwnProperty(location.state.studentSelected))){
+        setAnswer(doc.data()[location.state.studentSelected]);
+      } else {
+        setAnswer("");
+      }
+    }, err => {
+      console.error(`Encountered error: ${err}`);
+    });
+  },[])
     return (
         <div className="student-session-view-container">
             <Typography variant="subtitle1" component="p" style={{textTransform: "capitalize"}}>{location.state.studentSelected}</Typography>

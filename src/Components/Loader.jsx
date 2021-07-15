@@ -4,11 +4,11 @@ export default function Loader() {
   return (
     <div
       className="loader-wrapper"
-      style={{ display: "flex", justifyContent: "center" }}
+      style={{ display: "flex", justifyContent: "center", gap: '1em' }}
     >
-      <div className="loader" style={{ width: "60%" }}>
+      <div className="loader" style={{ width: "100%" }}>
         <h1>Loading...</h1>
-        <LinearProgress />
+        <LinearProgress style={{ width: "100%"}} />
       </div>
     </div>
   );

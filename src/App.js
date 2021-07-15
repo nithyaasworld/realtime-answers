@@ -9,6 +9,7 @@ import SessionView from "./Components/Tutor/SessionView";
 import StudentFirstView from "./Components/Student/StudentFirstView";
 import StudentSessionView from "./Components/Student/StudentSessionView";
 import Logout from "./Components/Tutor/Logout";
+import Loader from "./Loader";
 
 function App() {
   let user = useSelector((state) => state.user);
@@ -19,7 +20,7 @@ function App() {
         dispatch({type: "ADD_USER", payload: user})
       }
     });
-  });
+  },[]);
   return (
     <Router>
       <div className="App">
@@ -29,14 +30,14 @@ function App() {
             {user.hasOwnProperty("uid") ? <Dashboard/> : <Redirect to="/"></Redirect>}
           </Route>
           <Route path="/tutor-session-view">
-            <SessionView/>
+            {user.hasOwnProperty("uid") && <SessionView />}
           </Route>
-          {/* <Route path="/student-first-view/:tutorID">
+          <Route path="/student-first-view/:tutorID">
             <StudentFirstView />
           </Route>
           <Route path="/:tutorID/student-session-view">
             <StudentSessionView />
-          </Route> */}
+          </Route>
           <Route path="/">
             {user.hasOwnProperty("uid") ? <Redirect to='/tutor-dashboard' /> : <Login />}
           </Route>

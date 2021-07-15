@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
-import Loader from "../../Loader";
+import Loader from "../Loader";
 
 export default function Dashboard() {
   let [error, setError] = useState("");
@@ -48,7 +48,7 @@ export default function Dashboard() {
       history.push("./tutor-session-view");
     }
   }, [studentList]);
-  
+
   const onStudentListSubmit = async () => {
     setError("");
     let errorSetup = false;
@@ -91,7 +91,7 @@ export default function Dashboard() {
   return (
     <div
       className="dashboard-wrapper"
-      style={{ display: "flex", justifyContent: "center" }}
+      style={{ display: "flex", flexDirection: "column", justifyContent: "center", maxWidth:'600px' }}
     >
       {showLoader && <Loader />}
       {!showLoader && (
