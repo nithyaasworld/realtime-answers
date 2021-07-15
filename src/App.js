@@ -1,20 +1,18 @@
 import { useState, useEffect } from "react";
-import firebase from "firebase/app";
+import { authRef } from "./firebase-config";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
-import Login from "./Login";
-import Dashboard from "./Dashboard";
-import Loader from "./Loader";
-import { authRef, databaseRef } from "./firebase-config";
-import SessionView from "./SessionView";
+import Login from "./Components/Login";
+import Dashboard from "./Components/Dashboard";
+import SessionView from "./Components/SessionView";
+import StudentFirstView from "./Components/StudentFirstView";
+import StudentSessionView from "./Components/StudentSessionView";
 
 function App() {
   let [user, setUser] = useState("");
-  let [showSession, setShowSession] = useState(false);
   let [studentList, setStudentList] = useState([]);
   let [showLoader, setShowLoader] = useState(true);
-  useEffect(() => {
-    authRef.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-  }, []);
+
   useEffect(() => {
     authRef.onAuthStateChanged((user) => {
       if (user) {
@@ -22,71 +20,58 @@ function App() {
       }
     });
   });
-  useEffect(() => {
-    if (user.uid && studentList.length === 0) {
-      databaseRef
-      .collection("answerfox")
-      .doc(user.email)
-      .get()
-      .then((doc) => {
-        console.log("doc is: ", doc.data());
-        setShowLoader(false);
-        if (!doc.exists) {
-          setShowSession(false);
-        } else {
-          setStudentList(doc.data().student_list.sort());
-        }
-      });
-    }
-  }, [user])
-  useEffect(() => {
-    if (studentList.length > 0) {
-      setShowSession(true);
-    } else {
-      setShowSession(false);
-    }
-  },[studentList])
   const logout = async () => {
     await authRef.signOut().then(() => {
       setUser("");
       setStudentList([]);
-      setShowSession(false);
     });
   };
   return (
-    <div className="App">
-    {showLoader && <Loader />}
-      {user.hasOwnProperty("uid") && (
-        <img
-          style={{
-            position: "relative",
-            left: "95%",
-            width: "50px",
-            borderRadius: "50%",
-            cursor: "pointer",
-          }}
-          onClick={logout}
-          src={user.photoURL}
-          alt="user profile"
-        ></img>
-      )}
-      {!user.hasOwnProperty("uid") && <Login setUser={setUser} setShowLoader={setShowLoader}/>}
-      {user.hasOwnProperty("uid") && user.uid.length > 0 && !showSession && (
-        <Dashboard
-          user={user}
-          setUser={setUser}
-          setShowSession={setShowSession}
-        />
-      )}
-      {showSession && (
-        <SessionView
-          user={user}
-          setShowSession={setShowSession}
-          studentList={studentList}
-          setStudentList={setStudentList}
-        />
-      )}
-    </div>
+    <Router>
+      <div className="App">
+          {user.hasOwnProperty("uid") && (
+            <img
+              style={{
+                position: "relative",
+                left: "95%",
+                width: "50px",
+                borderRadius: "50%",
+                cursor: "pointer",
+              }}
+              onClick={logout}
+              src={user.photoURL}
+              alt="user profile"
+            ></img>
+          )}
+        <Switch>
+          <Route path="/tutor-dashboard">
+            {user.hasOwnProperty("uid") ? <Dashboard user={user}
+              setUser={setUser}
+              studentList={studentList}
+              setStudentList={setStudentList}
+              setShowLoader={setShowLoader}
+              showLoader={showLoader}
+            /> : <Redirect to="/"></Redirect>}
+          </Route>
+          <Route path="/tutor-session-view">
+            <SessionView
+              user={user}
+              studentList={studentList}
+              setStudentList={setStudentList}
+            />
+          </Route>
+          <Route path="/student-first-view/:tutorID">
+            <StudentFirstView />
+          </Route>
+          <Route path="/:tutorID/student-session-view">
+            <StudentSessionView />
+          </Route>
+          <Route path="/">
+            {user.hasOwnProperty("uid") ? <Redirect to='/tutor-dashboard' /> : <Login setUser={setUser} setShowLoader={setShowLoader} />}
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 export default App;

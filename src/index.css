@@ -65,3 +65,27 @@
 .session-view-container {
     padding: 2em;
 }
+.student-firstview-container{
+    display: flex;
+    flex-direction: column;
+    max-width: 200px;
+    gap: 1em;
+    margin: 1em auto;
+}
+.student-session-view-container{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  max-width: 600px;
+  margin: auto;
+}
+.answer-input-styles{
+  max-width: 600px;
+  min-width: 300px;
+  height: 250px;
+  border: 1.2px solid #3f51b5;
+  border-radius: 5px;
+  padding: 1em;
+  font-size: 1.2em;
+  color: #232d66;
+}

@@ -1,17 +1,24 @@
-import { provider, authRef } from "./firebase-config";
+import { provider, authRef } from "../firebase-config";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import firebase from "firebase/app";
 
 export default function Login({ setUser, setShowLoader }) {
+    const history = useHistory();
     useEffect(() => {
         setShowLoader(false);
-    },[])
+    }, [])
+    useEffect(() => {
+        authRef.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+      }, []);
     const signIn = (event) => {
         event.target.disabled = true;
         authRef
             .signInWithPopup(provider)
             .then((result) => {
                 setUser(result.user);
+                history.push('/tutor-dashboard');
             }).catch((error) => {
                 let errorMessage = error.message;
                 console.error(errorMessage);
