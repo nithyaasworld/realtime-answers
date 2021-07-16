@@ -58,7 +58,7 @@ export default function SessionView() {
         </div>
       </div>
       <p style={{ marginTop: "1em", marginBottom: "1em" }}>
-        Student Link: <a href={`http://localhost:3000/student-first-view/${user.email}`}>http://localhost:3000/student-first-view/{user.email}</a>
+        Student Link: <a href={`https://epic-wiles-749f36.netlify.app/student-first-view/${user.email}`}>https://epic-wiles-749f36.netlify.app/student-first-view/{user.email}</a>
       </p>
       <div className="answer-box-container">
         {studentList.length > 0 ?
