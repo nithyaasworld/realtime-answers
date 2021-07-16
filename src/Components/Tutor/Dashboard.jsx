@@ -6,12 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
-import Loader from "../Loader";
-
 export default function Dashboard() {
   let [error, setError] = useState("");
   let [isSubmitting, setIsSubmitting] = useState(false);
-  let [showLoader, setShowLoader] = useState(false);
   const studentListRef = useRef();
   const history = useHistory();
 
@@ -21,23 +18,19 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (user.uid && studentList.length === 0) {
-      setShowLoader(true);
       databaseRef
         .collection("answerfox")
         .doc(user.email)
         .get()
         .then((doc) => {
-          console.log("doc is: ", doc.data());
           if (doc.exists) {
             dispatch({
               type: "ADD_ALL_STUDENTS",
               payload: doc.data().student_list.sort(),
             }); 
           }
-          setShowLoader(false);
         })
         .catch((err) => {
-          setShowLoader(false);
           console.error(err);
         });
     }
@@ -75,7 +68,6 @@ export default function Dashboard() {
         .doc(user.email)
         .set({ student_list: currValuesInArr })
         .then((doc) => {
-          console.log("added doc is:", doc);
           dispatch({ type: "ADD_ALL_STUDENTS", payload: currValuesInArr });
           setIsSubmitting(false);
           history.push("./tutor-session-view");
