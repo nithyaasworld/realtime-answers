@@ -3,6 +3,7 @@ import { databaseRef } from "../../firebase-config";
 import { Button, Typography } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import Loader from "../Loader";
 
 export default function SessionView() {
   let [showEndSessionText, setShowEndSessionText] = useState(false);
@@ -26,7 +27,10 @@ export default function SessionView() {
   }
   useEffect(() => {
     databaseRef.collection("answerfox").doc(user.email).onSnapshot(doc => {
-      dispatch({type:"ADD_ALL_STUDENTS", payload: doc.data().student_list })
+      if (doc.data()) {
+        dispatch({ type: "ADD_ALL_STUDENTS", payload: doc.data().student_list })
+      setAnswers(doc.data());
+      }
     }, err => {
       console.error(`Encountered error: ${err}`);
     });
@@ -57,13 +61,13 @@ export default function SessionView() {
         Student Link: <a href={`http://localhost:3000/student-first-view/${user.email}`}>http://localhost:3000/student-first-view/{user.email}</a>
       </p>
       <div className="answer-box-container">
-        {studentList.length > 0 &&
+        {studentList.length > 0 ?
           studentList.map((s) => (
             <div key={s} className="answer-box-single">
               <Typography color="primary">{s}</Typography>
               <div className="answer-box">{answers[s] || ""}</div>
             </div>
-          ))}
+          )) : <Loader/>}
       </div>
     </div>
   );

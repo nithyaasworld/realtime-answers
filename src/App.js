@@ -9,7 +9,6 @@ import SessionView from "./Components/Tutor/SessionView";
 import StudentFirstView from "./Components/Student/StudentFirstView";
 import StudentSessionView from "./Components/Student/StudentSessionView";
 import Logout from "./Components/Tutor/Logout";
-import Loader from "./Loader";
 
 function App() {
   let user = useSelector((state) => state.user);

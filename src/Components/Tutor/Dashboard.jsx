@@ -87,14 +87,11 @@ export default function Dashboard() {
         });
     }
   };
-
   return (
     <div
       className="dashboard-wrapper"
       style={{ display: "flex", flexDirection: "column", justifyContent: "center", maxWidth:'600px' }}
     >
-      {showLoader && <Loader />}
-      {!showLoader && (
         <div className="dashboard-container" style={{ maxWidth: "600px" }}>
           <h1>My Students</h1>
           <p style={{ marginTop: "1em", marginBottom: "1em" }}>
@@ -124,7 +121,6 @@ export default function Dashboard() {
             <p style={{ color: "red", marginTop: "1em" }}>{error}</p>
           )}
         </div>
-      )}
     </div>
   );
 }
