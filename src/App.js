@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { authRef } from "./firebase-config";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,7 +29,7 @@ function App() {
             {user.hasOwnProperty("uid") ? <Dashboard/> : <Redirect to="/"></Redirect>}
           </Route>
           <Route path="/tutor-session-view">
-            {user.hasOwnProperty("uid") && <SessionView />}
+            {user.hasOwnProperty("uid") ? <SessionView /> : <Redirect to="/"></Redirect>}
           </Route>
           <Route path="/student-first-view/:tutorID">
             <StudentFirstView />
