@@ -1,6 +1,11 @@
 import { useEffect } from "react";
 import { authRef } from "./firebase-config";
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import Login from "./Components/Tutor/Login";
@@ -16,20 +21,28 @@ function App() {
   useEffect(() => {
     authRef.onAuthStateChanged((user) => {
       if (user) {
-        dispatch({type: "ADD_USER", payload: user})
+        dispatch({ type: "ADD_USER", payload: user });
       }
     });
-  },[]);
+  }, []);
   return (
     <Router>
       <div className="App">
-          {user.hasOwnProperty("uid") && <Logout />}
+        {user.hasOwnProperty("uid") && <Logout />}
         <Switch>
           <Route path="/tutor-dashboard">
-            {user.hasOwnProperty("uid") ? <Dashboard/> : <Redirect to="/"></Redirect>}
+            {user.hasOwnProperty("uid") ? (
+              <Dashboard />
+            ) : (
+              <Redirect to="/"></Redirect>
+            )}
           </Route>
           <Route path="/tutor-session-view">
-            {user.hasOwnProperty("uid") ? <SessionView /> : <Redirect to="/"></Redirect>}
+            {user.hasOwnProperty("uid") ? (
+              <SessionView />
+            ) : (
+              <Redirect to="/"></Redirect>
+            )}
           </Route>
           <Route path="/student-first-view/:tutorID">
             <StudentFirstView />
@@ -38,7 +51,11 @@ function App() {
             <StudentSessionView />
           </Route>
           <Route path="/">
-            {user.hasOwnProperty("uid") ? <Redirect to='/tutor-dashboard' /> : <Login />}
+            {user.hasOwnProperty("uid") ? (
+              <Redirect to="/tutor-dashboard" />
+            ) : (
+              <Login />
+            )}
           </Route>
         </Switch>
       </div>

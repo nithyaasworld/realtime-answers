@@ -10,11 +10,11 @@ export default function SessionView() {
   let [showClearAnswerText, setShowClearAnswerText] = useState(false);
   let [answers, setAnswers] = useState({});
   const history = useHistory();
-  let studentList = useSelector(state => state.answer_list.student_list);
-  let user = useSelector(state => state.user);
+  let studentList = useSelector((state) => state.answer_list.student_list);
+  let user = useSelector((state) => state.user);
   let dispatch = useDispatch();
   let clearBtnRef = useRef();
-   const endSession = async () => {
+  const endSession = async () => {
     setShowEndSessionText(true);
     dispatch({ type: "DELETE_ALL_STUDENTS" });
     await databaseRef.collection("answerfox").doc(user.email).delete();
@@ -23,31 +23,51 @@ export default function SessionView() {
   const clearAllAnswers = async () => {
     setShowClearAnswerText(true);
     setAnswers({});
-    await databaseRef.collection("answerfox").doc(user.email).set({student_list: studentList}).then(()=> setShowClearAnswerText(false));
-  }
+    await databaseRef
+      .collection("answerfox")
+      .doc(user.email)
+      .set({ student_list: studentList })
+      .then(() => setShowClearAnswerText(false));
+  };
   useEffect(() => {
-    databaseRef.collection("answerfox").doc(user.email).onSnapshot(doc => {
-      if (doc.data()) {
-        dispatch({ type: "ADD_ALL_STUDENTS", payload: doc.data().student_list })
-      setAnswers(doc.data());
-      }
-    }, err => {
-      console.error(`Encountered error: ${err}`);
-    });
-  }, [])
+    databaseRef
+      .collection("answerfox")
+      .doc(user.email)
+      .onSnapshot(
+        (doc) => {
+          if (doc.data()) {
+            dispatch({
+              type: "ADD_ALL_STUDENTS",
+              payload: doc.data().student_list,
+            });
+            setAnswers(doc.data());
+          }
+        },
+        (err) => {
+          console.error(`Encountered error: ${err}`);
+        }
+      );
+  }, []);
   useEffect(() => {
-    if (JSON.stringify(answers) === '{}') {
+    if (JSON.stringify(answers) === "{}") {
       clearBtnRef.current.disabled = true;
     } else {
       clearBtnRef.current.disabled = false;
     }
-  },[answers])
+  }, [answers]);
   return (
     <div className="session-view-container">
       <div className="dashboard-first-row">
-        <div style={{display: 'flex', gap: '1em'}}>
-        <h1>Dashboard</h1>
-        <Button ref={clearBtnRef} onClick={clearAllAnswers} variant="contained" color="primary">Clear All Answers</Button>
+        <div style={{ display: "flex", gap: "1em" }}>
+          <h1>Dashboard</h1>
+          <Button
+            ref={clearBtnRef}
+            onClick={clearAllAnswers}
+            variant="contained"
+            color="primary"
+          >
+            Clear All Answers
+          </Button>
         </div>
         <div className="ending-session-section">
           {showEndSessionText && <p>Ending session...</p>}
@@ -58,16 +78,24 @@ export default function SessionView() {
         </div>
       </div>
       <p style={{ marginTop: "1em", marginBottom: "1em" }}>
-        Student Link: <a href={`https://epic-wiles-749f36.netlify.app/student-first-view/${user.email}`}>https://epic-wiles-749f36.netlify.app/student-first-view/{user.email}</a>
+        Student Link:{" "}
+        <a
+          href={`https://epic-wiles-749f36.netlify.app/student-first-view/${user.email}`}
+        >
+          https://epic-wiles-749f36.netlify.app/student-first-view/{user.email}
+        </a>
       </p>
       <div className="answer-box-container">
-        {studentList.length > 0 ?
+        {studentList.length > 0 ? (
           studentList.map((s) => (
             <div key={s} className="answer-box-single">
               <Typography color="primary">{s}</Typography>
               <div className="answer-box">{answers[s] || ""}</div>
             </div>
-          )) : <Loader/>}
+          ))
+        ) : (
+          <Loader />
+        )}
       </div>
     </div>
   );

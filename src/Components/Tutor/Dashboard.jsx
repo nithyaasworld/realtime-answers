@@ -27,7 +27,7 @@ export default function Dashboard() {
             dispatch({
               type: "ADD_ALL_STUDENTS",
               payload: doc.data().student_list.sort(),
-            }); 
+            });
           }
         })
         .catch((err) => {
@@ -82,37 +82,42 @@ export default function Dashboard() {
   return (
     <div
       className="dashboard-wrapper"
-      style={{ display: "flex", flexDirection: "column", justifyContent: "center", maxWidth:'600px' }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        maxWidth: "600px",
+      }}
     >
-        <div className="dashboard-container" style={{ maxWidth: "600px" }}>
-          <h1>My Students</h1>
-          <p style={{ marginTop: "1em", marginBottom: "1em" }}>
-            Enter the names of each person who will answer your questions,
-            separated by comma or new line
-          </p>
-          <TextField
-            inputRef={studentListRef}
-            label="Enter student names separated by comma or new line"
-            placeholder="Eg: David, Kim, Rajesh"
-            multiline
-            rows={10}
-            variant="outlined"
-            fullWidth
-          />
-          <div className="submit-btn-message">
-            <Button
-              onClick={onStudentListSubmit}
-              variant="contained"
-              color="primary"
-            >
-              Submit
-            </Button>
-            {isSubmitting && <p>Submitting...</p>}
-          </div>
-          {error.length > 0 && (
-            <p style={{ color: "red", marginTop: "1em" }}>{error}</p>
-          )}
+      <div className="dashboard-container" style={{ maxWidth: "600px" }}>
+        <h1>My Students</h1>
+        <p style={{ marginTop: "1em", marginBottom: "1em" }}>
+          Enter the names of each person who will answer your questions,
+          separated by comma or new line
+        </p>
+        <TextField
+          inputRef={studentListRef}
+          label="Enter student names separated by comma or new line"
+          placeholder="Eg: David, Kim, Rajesh"
+          multiline
+          rows={10}
+          variant="outlined"
+          fullWidth
+        />
+        <div className="submit-btn-message">
+          <Button
+            onClick={onStudentListSubmit}
+            variant="contained"
+            color="primary"
+          >
+            Submit
+          </Button>
+          {isSubmitting && <p>Submitting...</p>}
         </div>
+        {error.length > 0 && (
+          <p style={{ color: "red", marginTop: "1em" }}>{error}</p>
+        )}
+      </div>
     </div>
   );
 }

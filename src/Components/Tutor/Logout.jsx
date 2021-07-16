@@ -3,16 +3,16 @@ import { useHistory } from "react-router-dom";
 import { authRef } from "../../firebase-config";
 
 export default function Logout() {
-    let dispatch = useDispatch();
-  let user = useSelector(state => state.user);
+  let dispatch = useDispatch();
+  let user = useSelector((state) => state.user);
   let history = useHistory();
-    const logout = async () => {
-        await authRef.signOut().then(() => {
-          dispatch({ type: "DELETE_USER" });
-          dispatch({ type: "DELETE_ALL_STUDENTS" });
-        });
-      history.push('./');
-      };
+  const logout = async () => {
+    await authRef.signOut().then(() => {
+      dispatch({ type: "DELETE_USER" });
+      dispatch({ type: "DELETE_ALL_STUDENTS" });
+    });
+    history.push("./");
+  };
   return (
     <img
       style={{
