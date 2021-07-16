@@ -22,15 +22,11 @@ export default function SessionView() {
   const clearAllAnswers = async () => {
     setShowClearAnswerText(true);
     setAnswers({});
-    console.log(studentList);
     await databaseRef.collection("answerfox").doc(user.email).set({student_list: studentList}).then(()=> setShowClearAnswerText(false));
   }
   useEffect(() => {
-    console.log("re rendered");
-    console.log(user.email);
     databaseRef.collection("answerfox").doc(user.email).onSnapshot(doc => {
-      console.log('data: ', doc.data());
-      setAnswers(doc.data());
+      dispatch({type:"ADD_ALL_STUDENTS", payload: doc.data().student_list })
     }, err => {
       console.error(`Encountered error: ${err}`);
     });

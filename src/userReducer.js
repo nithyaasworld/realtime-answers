@@ -11,7 +11,8 @@ export default function userReducer(state = initialState, action) {
       return { ...state, ...{ user: {} } };
     }
     case "ADD_ALL_STUDENTS": {
-      let stateCopy = JSON.parse(JSON.stringify(state));
+          let stateCopy = JSON.parse(JSON.stringify(state));
+          console.log("action payload is: ",action.payload);
       stateCopy.answer_list.student_list = action.payload;
       return stateCopy;
     }
