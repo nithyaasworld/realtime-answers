@@ -24,10 +24,13 @@ export default function Dashboard() {
         .get()
         .then((doc) => {
           if (doc.exists) {
-            dispatch({
-              type: "ADD_ALL_STUDENTS",
-              payload: doc.data().student_list.sort(),
-            });
+            // dispatch({
+            //   type: "ADD_ALL_STUDENTS",
+            //   payload: doc.data().student_list.sort(),
+            // });
+            if (doc.data().student_list.length > 0) {
+              history.push("./tutor-session-view");
+            }
           }
         })
         .catch((err) => {
@@ -36,11 +39,11 @@ export default function Dashboard() {
     }
   }, []);
 
-  useEffect(() => {
-    if (studentList.length > 0) {
-      history.push("./tutor-session-view");
-    }
-  }, [studentList]);
+  // useEffect(() => {
+  //   if (studentList.length > 0) {
+  //     history.push("./tutor-session-view");
+  //   }
+  // }, [studentList]);
 
   const onStudentListSubmit = async () => {
     setError("");
