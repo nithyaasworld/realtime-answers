@@ -10,10 +10,11 @@ export default function SessionView() {
   let [showClearAnswerText, setShowClearAnswerText] = useState(false);
   let [answers, setAnswers] = useState({});
   const history = useHistory();
-  let studentList = useSelector((state) => state.answer_list.student_list);
+  let studentList = useSelector((state) => state.answer_list.student_list.student_list);
   let user = useSelector((state) => state.user);
   let dispatch = useDispatch();
   let clearBtnRef = useRef();
+  let [sessionID, setSessionID] = useState(0);
   const endSession = async () => {
     setShowEndSessionText(true);
     dispatch({ type: "DELETE_ALL_STUDENTS" });
@@ -26,9 +27,13 @@ export default function SessionView() {
     await databaseRef
       .collection("answerfox")
       .doc(user.email)
-      .set({ student_list: studentList })
+      .set({ student_list: studentList, session_id: sessionID })
       .then(() => setShowClearAnswerText(false));
   };
+  useEffect(() => {
+    console.log('student_list in line33: ', studentList);
+  }, [studentList]);
+
   useEffect(() => {
     databaseRef
       .collection("answerfox")
@@ -36,9 +41,11 @@ export default function SessionView() {
       .onSnapshot(
         (doc) => {
           if (doc.data()) {
+            console.log(doc.data());
+            setSessionID(doc.data().session_id);
             dispatch({
               type: "ADD_ALL_STUDENTS",
-              payload: doc.data().student_list,
+              payload: {currValuesInArr:  doc.data().student_list, session_id: doc.data().session_id}
             });
             setAnswers(doc.data());
           }
@@ -77,16 +84,16 @@ export default function SessionView() {
           </Button>
         </div>
       </div>
-      <p style={{ marginTop: "1em", marginBottom: "1em" }}>
+      {sessionID !== 0 && <p style={{ marginTop: "1em", marginBottom: "1em" }}>
         Student Link:{" "}
         <a
-          href={`https://epic-wiles-749f36.netlify.app/student-first-view/${user.email}`}
+          href={`https://epic-wiles-749f36.netlify.app/student-first-view/${user.email}/${sessionID}`}
         >
-          https://epic-wiles-749f36.netlify.app/student-first-view/{user.email}
+          {`https://epic-wiles-749f36.netlify.app/student-first-view/${user.email}/${sessionID}`}
         </a>
-      </p>
+      </p>}
       <div className="answer-box-container">
-        {studentList.length > 0 ? (
+        {studentList && studentList.length > 0 ? (
           studentList.map((s) => (
             <div key={s} className="answer-box-single">
               <Typography color="primary">{s}</Typography>

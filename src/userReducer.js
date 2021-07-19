@@ -1,6 +1,6 @@
 let initialState = {
   user: {},
-  answer_list: { student_list: [] },
+  answer_list: { student_list: [], session_id: "" },
 };
 export default function userReducer(state = initialState, action) {
   switch (action.type) {
@@ -12,8 +12,9 @@ export default function userReducer(state = initialState, action) {
     }
     case "ADD_ALL_STUDENTS": {
           let stateCopy = JSON.parse(JSON.stringify(state));
-          console.log("action payload is: ",action.payload);
-      stateCopy.answer_list.student_list = action.payload;
+      console.log("action payload is: ", action.payload);
+      let newStudentList = { student_list: action.payload.currValuesInArr, session_id: action.payload.sessionID };
+      stateCopy.answer_list.student_list = newStudentList;
       return stateCopy;
     }
     case "ADD_ANSWERS": {

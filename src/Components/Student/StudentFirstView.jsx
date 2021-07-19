@@ -8,16 +8,20 @@ export default function StudentFirstView() {
   let [studentList, setStudentList] = useState([]);
   let { tutorID } = useParams();
   const history = useHistory();
+  let [sessionID, setSessionID] = useState("");
   const handleChange = (event) => {
     console.log(event.target.value, "is selected");
     setStudentSelected(event.target.value);
     };
     const submitHandler = () => {
         history.push({
-            pathname: `../${tutorID}/student-session-view`,
+            pathname: `../../${tutorID}/student-session-view/${sessionID}`,
             state: { studentSelected },
         });
-    }
+  }
+  useEffect(() => {
+    console.log('sessionID is', sessionID);
+  }, [sessionID]);
   useEffect(() => {
     databaseRef
       .collection("answerfox")
@@ -27,6 +31,7 @@ export default function StudentFirstView() {
         console.log("doc is: ", doc.data());
         if (doc.exists) {
           setStudentList(doc.data().student_list.sort());
+          setSessionID(doc.data().session_id);
         }
       })
       .catch((err) => {

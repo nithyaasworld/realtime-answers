@@ -66,12 +66,13 @@ export default function Dashboard() {
     }
     if (!errorSetup) {
       setIsSubmitting(true);
+      let sessionID = new Date().getTime();
       await databaseRef
         .collection("answerfox")
         .doc(user.email)
-        .set({ student_list: currValuesInArr })
+        .set({ student_list: currValuesInArr, session_id: sessionID })
         .then((doc) => {
-          dispatch({ type: "ADD_ALL_STUDENTS", payload: currValuesInArr });
+          dispatch({ type: "ADD_ALL_STUDENTS", payload: { currValuesInArr, sessionID } });
           setIsSubmitting(false);
           history.push("./tutor-session-view");
         })

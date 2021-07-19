@@ -47,7 +47,7 @@ function App() {
           <Route path="/student-first-view/:tutorID">
             <StudentFirstView />
           </Route>
-          <Route path="/:tutorID/student-session-view">
+          <Route path="/:tutorID/student-session-view/:sessionID">
             <StudentSessionView />
           </Route>
           <Route path="/">
