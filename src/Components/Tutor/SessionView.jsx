@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { databaseRef } from "../../firebase-config";
+import { databaseRef, authRef } from "../../firebase-config";
 import { Button, Typography } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +10,9 @@ export default function SessionView() {
   let [showClearAnswerText, setShowClearAnswerText] = useState(false);
   let [answers, setAnswers] = useState({});
   const history = useHistory();
-  let studentList = useSelector((state) => state.answer_list.student_list.student_list);
+  let studentList = useSelector(
+    (state) => state.answer_list.student_list.student_list
+  );
   let user = useSelector((state) => state.user);
   let dispatch = useDispatch();
   let clearBtnRef = useRef();
@@ -31,29 +33,37 @@ export default function SessionView() {
       .then(() => setShowClearAnswerText(false));
   };
   useEffect(() => {
-    console.log('student_list in line33: ', studentList);
+    console.log("student_list in line33: ", studentList);
   }, [studentList]);
-
   useEffect(() => {
-    databaseRef
-      .collection("answerfox")
-      .doc(user.email)
-      .onSnapshot(
-        (doc) => {
-          if (doc.data()) {
-            console.log(doc.data());
-            setSessionID(doc.data().session_id);
-            dispatch({
-              type: "ADD_ALL_STUDENTS",
-              payload: {currValuesInArr:  doc.data().student_list, session_id: doc.data().session_id}
-            });
-            setAnswers(doc.data());
-          }
-        },
-        (err) => {
-          console.error(`Encountered error: ${err}`);
-        }
-      );
+    authRef.onAuthStateChanged((user) => {
+      if (user) {
+        databaseRef
+          .collection("answerfox")
+          .doc(user.email)
+          .onSnapshot(
+            (doc) => {
+              if (doc.data()) {
+                console.log(doc.data());
+                setSessionID(doc.data().session_id);
+                dispatch({
+                  type: "ADD_ALL_STUDENTS",
+                  payload: {
+                    currValuesInArr: doc.data().student_list,
+                    session_id: doc.data().session_id,
+                  },
+                });
+                setAnswers(doc.data());
+              }
+            },
+            (err) => {
+              console.error(`Encountered error: ${err}`);
+            }
+          );
+      } else {
+        history.push("/");
+      }
+    });
   }, []);
   useEffect(() => {
     if (JSON.stringify(answers) === "{}") {
@@ -84,14 +94,16 @@ export default function SessionView() {
           </Button>
         </div>
       </div>
-      {sessionID !== 0 && <p style={{ marginTop: "1em", marginBottom: "1em" }}>
-        Student Link:{" "}
-        <a
-          href={`https://epic-wiles-749f36.netlify.app/student-first-view/${user.email}/${sessionID}`}
-        >
-          {`https://epic-wiles-749f36.netlify.app/student-first-view/${user.email}/${sessionID}`}
-        </a>
-      </p>}
+      {sessionID !== 0 && (
+        <p style={{ marginTop: "1em", marginBottom: "1em" }}>
+          Student Link:{" "}
+          <a
+            href={`https://epic-wiles-749f36.netlify.app/student-first-view/${user.email}/${sessionID}`}
+          >
+            {`https://epic-wiles-749f36.netlify.app/student-first-view/${user.email}/${sessionID}`}
+          </a>
+        </p>
+      )}
       <div className="answer-box-container">
         {studentList && studentList.length > 0 ? (
           studentList.map((s) => (

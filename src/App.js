@@ -38,11 +38,7 @@ function App() {
             )}
           </Route>
           <Route path="/tutor-session-view">
-            {user.hasOwnProperty("uid") ? (
-              <SessionView />
-            ) : (
-              <Redirect to="/"></Redirect>
-            )}
+            <SessionView />
           </Route>
           <Route path="/student-first-view/:tutorID">
             <StudentFirstView />

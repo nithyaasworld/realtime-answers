@@ -24,7 +24,7 @@ export default function Dashboard() {
         .get()
         .then((doc) => {
           if (doc.exists) {
-              if (doc.data().student_list.length > 0) {
+            if (doc.data().student_list.length > 0) {
               history.push("./tutor-session-view");
             }
           }
@@ -62,7 +62,10 @@ export default function Dashboard() {
         .doc(user.email)
         .set({ student_list: currValuesInArr, session_id: sessionID })
         .then((doc) => {
-          dispatch({ type: "ADD_ALL_STUDENTS", payload: { currValuesInArr, sessionID } });
+          dispatch({
+            type: "ADD_ALL_STUDENTS",
+            payload: { currValuesInArr, sessionID },
+          });
           setIsSubmitting(false);
           history.push("./tutor-session-view");
         })
